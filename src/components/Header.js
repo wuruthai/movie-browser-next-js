@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -8,6 +8,25 @@ import InputBase from "@material-ui/core/InputBase";
 import SearchIcon from "@material-ui/icons/Search";
 import GradeIcon from "@material-ui/icons/Grade";
 import HomeIcon from "@material-ui/icons/Home";
+import InputLabel from "@material-ui/core/InputLabel";
+import { MOVIE_TYPES } from "../constants";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
+import TextField from "@material-ui/core/TextField";
+import { useSelector, useDispatch } from "react-redux";
+import { getList } from "../redux/movie/movie.action";
+import { setFilters } from "../redux/filters/filters.action";
+import Button from "@material-ui/core/Button";
+import Icon from "@material-ui/core/Icon";
+
+import {
+  DatePicker,
+  TimePicker,
+  DateTimePicker,
+  MuiPickersUtilsProvider,
+} from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns"; // choose your lib
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -19,18 +38,17 @@ const useStyles = makeStyles((theme) => ({
       display: "block",
     },
   },
-  search: {
+  filterItem: {
     position: "relative",
     borderRadius: theme.shape.borderRadius,
     backgroundColor: fade(theme.palette.common.white, 0.15),
     "&:hover": {
       backgroundColor: fade(theme.palette.common.white, 0.25),
     },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
+    marginRight: theme.spacing(1),
+    marginLeft: theme.spacing(1),
     width: "100%",
     [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(3),
       width: "auto",
     },
   },
@@ -44,9 +62,18 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
   },
   inputRoot: {
-    color: "inherit",
+    color: "white",
+  },
+  datePicker: { minWidth: 100, color: "white" },
+  select: {
+    padding: 10,
+    minWidth: 75,
+  },
+  selectIcon: {
+    color: "white",
   },
   inputInput: {
+    minWidth: 75,
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
@@ -58,12 +85,17 @@ const useStyles = makeStyles((theme) => ({
   },
   sectionDesktop: {
     display: "flex",
+    flexWrap: "wrap",
   },
+  submitButton: { marginLeft: theme.spacing(1) },
 }));
 
 const Header = () => {
   const classes = useStyles();
+  const movieTypeKeys = useMemo(() => Object.keys(MOVIE_TYPES), [MOVIE_TYPES]);
+  const { search, date, movieType } = useSelector((state) => state.filters);
 
+  const dispatch = useDispatch();
   return (
     <div className={classes.grow}>
       <AppBar position="static">
@@ -71,12 +103,18 @@ const Header = () => {
           <Typography className={classes.title} variant="h6" noWrap>
             Movie Browser
           </Typography>
-          <div className={classes.search}>
+
+          <div className={classes.filterItem}>
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
             <InputBase
-              placeholder="Search…"
+              placeholder="Search"
+              variant="outlined"
+              value={search}
+              onChange={({ target: { value } }) =>
+                dispatch(setFilters({ search: value, movieType, date }))
+              }
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,
@@ -84,13 +122,65 @@ const Header = () => {
               inputProps={{ "aria-label": "search" }}
             />
           </div>
+
+          <div className={classes.filterItem}>
+            <Select
+              value={movieType}
+              classes={{
+                root: classes.inputRoot,
+                select: classes.select,
+                icon: classes.selectIcon,
+              }}
+              onChange={({ target: { value } }) => {
+                dispatch(setFilters({ search, movieType: value, date }));
+              }}
+            >
+              {movieTypeKeys.map((type) => (
+                <MenuItem key={type} value={MOVIE_TYPES[type]}>
+                  {MOVIE_TYPES[type]}
+                </MenuItem>
+              ))}
+            </Select>
+          </div>
+          <div className={classes.filterItem}>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <DatePicker
+                TextFieldComponent={(props) => (
+                  <InputBase
+                    {...props}
+                    placeholder="Year"
+                    inputProps={{ "aria-label": "year" }}
+                    style={{ color: "white", paddingLeft: 10 }}
+                  />
+                )}
+                animateYearScrolling
+                clearable
+                emptyLabel="Year"
+                variant="outlined"
+                placeholder="Year"
+                disableFuture
+                value={date}
+                views={["year"]}
+                onChange={(newDate) => {
+                  dispatch(setFilters({ search, movieType, date: newDate }));
+                }}
+              />
+            </MuiPickersUtilsProvider>
+          </div>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.button}
+          >
+            GET
+          </Button>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton aria-label="favorites" color="inherit">
-              <GradeIcon />
-            </IconButton>
             <IconButton aria-label="home" color="inherit">
               <HomeIcon />
+            </IconButton>
+            <IconButton aria-label="favorites" color="inherit">
+              <GradeIcon />
             </IconButton>
           </div>
         </Toolbar>

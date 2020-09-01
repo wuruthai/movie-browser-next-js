@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 
-import { List } from "../src/components";
-import { getList } from "../src/redux/movie/movie.action";
+import { List } from "../../src/components";
+import { getList } from "../../src/redux/movie/movie.action";
 
 const Home = (props) => {
   const { movie, getList } = props;

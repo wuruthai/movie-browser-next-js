@@ -2,9 +2,12 @@
   "name": "with-redux-wrapper-and-material-ui",
   "version": "2.0.0",
   "dependencies": {
+    "@date-io/date-fns": "1.x",
     "@material-ui/core": "latest",
     "@material-ui/icons": "latest",
+    "@material-ui/pickers": "^3.2.10",
     "axios": "^0.20.0",
+    "date-fns": "^2.16.1",
     "next": "latest",
     "next-redux-wrapper": "latest",
     "react": "^16.8.0",
