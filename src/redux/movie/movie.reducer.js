@@ -2,8 +2,9 @@ import * as movieTypes from "./movie.type";
 
 const initialState = {
   isLoading: false,
-  data: null,
+  data: [],
   page: 1,
+  totalResults: 0,
 };
 
 const movieReducer = (state = initialState, { type, payload }) => {
@@ -16,7 +17,6 @@ const movieReducer = (state = initialState, { type, payload }) => {
     case `${movieTypes.GET_FILTERED_MOVIES_FULFILLED}`:
       return {
         ...state,
-        ...state.movie,
         ...payload,
         isLoading: false,
       };

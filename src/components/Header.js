@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -8,24 +8,15 @@ import InputBase from "@material-ui/core/InputBase";
 import SearchIcon from "@material-ui/icons/Search";
 import GradeIcon from "@material-ui/icons/Grade";
 import HomeIcon from "@material-ui/icons/Home";
-import InputLabel from "@material-ui/core/InputLabel";
 import { MOVIE_TYPES } from "../constants";
 import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
-import TextField from "@material-ui/core/TextField";
 import { useSelector, useDispatch } from "react-redux";
 import { getList } from "../redux/movie/movie.action";
 import { setFilters } from "../redux/filters/filters.action";
 import Button from "@material-ui/core/Button";
-import Icon from "@material-ui/core/Icon";
 
-import {
-  DatePicker,
-  TimePicker,
-  DateTimePicker,
-  MuiPickersUtilsProvider,
-} from "@material-ui/pickers";
+import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns"; // choose your lib
 
 const useStyles = makeStyles((theme) => ({
@@ -168,9 +159,11 @@ const Header = () => {
             </MuiPickersUtilsProvider>
           </div>
           <Button
+            disabled={!search}
             variant="contained"
             color="primary"
             className={classes.button}
+            onClick={() => dispatch(getList())}
           >
             GET
           </Button>

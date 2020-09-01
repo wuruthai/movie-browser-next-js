@@ -15,7 +15,6 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
   },
-  cardMedia: {},
   cardContent: {
     flexGrow: 1,
   },
@@ -26,30 +25,32 @@ const Item = ({ Title, Poster, Year }) => {
   return (
     <Grid item xs={12} sm={6} md={4}>
       <Card className={classes.card}>
-        {Poster !== "N/A" && (
-          <CardMedia
-            component="img"
-            className={classes.cardMedia}
-            image={Poster}
-          />
-        )}
+        <CardMedia
+          component="img"
+          className={classes.cardMedia}
+          image={
+            Poster === "N/A"
+              ? "https://parisaksesuar.com.tr/wp-content/uploads/2018/03/placehold.it-300x450-3.jpg"
+              : Poster
+          }
+        />
         <CardContent className={classes.cardContent}>
           <Typography gutterBottom variant="subtitle1" component="h3">
-            {Title}
+            {`${Title} - ${Year}`}
           </Typography>
           <Typography component="p">
             This is a media card. You can use this section to describe the
             content.
           </Typography>
         </CardContent>
-        {/* <CardActions>
+        <CardActions>
           <Button size="small" color="primary">
             View
           </Button>
           <Button size="small" color="primary">
             Edit
           </Button>
-        </CardActions> */}
+        </CardActions>
       </Card>
     </Grid>
   );

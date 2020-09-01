@@ -4,7 +4,7 @@ import { MOVIE_TYPES } from "../../constants";
 const initialState = {
   search: "",
   movieType: MOVIE_TYPES.MOVIE,
-  dates: null,
+  date: null,
 };
 
 const filtersReducer = (state = initialState, { type, payload }) => {
