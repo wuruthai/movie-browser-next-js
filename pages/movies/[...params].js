@@ -1,16 +1,17 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 
-import { List } from "../src/components";
-import { getList } from "../src/redux/movie/movie.action";
+import { List } from "../../src/components";
+import { getList } from "../../src/redux/movie/movie.action";
 
 const Home = (props) => {
   const { movie, getList } = props;
 
   return <List data={movie?.data?.Search} />;
 };
-Home.getInitialProps = async ({ store, isServer }) => {
-  await store.dispatch(getList());
+Home.getInitialProps = async ({ store, query, isServer }) => {
+  const [search] = query.params;
+  await store.dispatch(getList({ search }));
   return { isServer };
 };
 

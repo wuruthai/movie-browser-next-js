@@ -15,14 +15,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const List = ({ cardList = [1, 2, 3, 4, 5, 6, 7, 8, 9] }) => {
+const List = ({ data = [] }) => {
   const classes = useStyles();
 
   return (
     <Container className={classes.cardGrid} maxWidth="md">
       <Grid container spacing={4}>
-        {cardList.map((item) => (
-          <Card />
+        {data.map((item) => (
+          <Card Title={item.Title} Poster={item.Poster} Year={item.Year} />
         ))}
       </Grid>
     </Container>
