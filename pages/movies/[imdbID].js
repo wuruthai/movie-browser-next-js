@@ -19,7 +19,6 @@ const useStyles = makeStyles((theme) => ({
 const SingleMovie = (props) => {
   const classes = useStyles();
   const { movieDetail } = props;
-  console.log(movieDetail);
   return (
     <Container className={classes.cardGrid} maxWidth="md">
       <Grid container spacing={3}>

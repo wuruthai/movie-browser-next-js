@@ -41,7 +41,6 @@ const List = ({ data = [] }) => {
               router.push(`/movies/${item.imdbID}`);
             }}
             onFavorite={(favoriteItem, isFavorite) => {
-              console.log("isFavorite", isFavorite);
               isFavorite
                 ? dispatch(removeFromFavorites(favoriteItem))
                 : dispatch(addToFavorites(favoriteItem));

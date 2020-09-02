@@ -87,7 +87,6 @@ const Header = () => {
   const movieTypeKeys = useMemo(() => Object.keys(MOVIE_TYPES), [MOVIE_TYPES]);
   const { search, date, movieType } = useSelector((state) => state.filters);
   const router = useRouter();
-  console.log("router.pathname", router.pathname);
   const showFilters = useMemo(() => {
     switch (router.pathname) {
       case "/":
@@ -97,7 +96,6 @@ const Header = () => {
         return false;
     }
   }, [router.pathname]);
-  console.log(showFilters);
   const dispatch = useDispatch();
   return (
     <div className={classes.grow}>
