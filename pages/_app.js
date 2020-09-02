@@ -31,7 +31,7 @@ const _App = withRedux(store)(
       return (
         <Container>
           <Head>
-            <title>NextJS - With Redux and Material UI</title>
+            <title>Movie Tracker</title>
           </Head>
           <MuiThemeProvider theme={theme}>
             <CssBaseline />
