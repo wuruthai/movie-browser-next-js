@@ -1,7 +1,7 @@
 import axios from "axios";
 import { OMDB_API_KEY } from "../constants/index";
 const instance = axios.create({
-  baseURL: `http://www.omdbapi.com/`,
+  baseURL: `https://www.omdbapi.com/`,
 });
 instance.interceptors.request.use((config) => {
   config.params = {
