@@ -25,7 +25,6 @@ export const getList = (page = 1) => async (dispatch, getState) => {
       },
     });
   } catch (error) {
-    console.log(error);
     return dispatch({
       type: movieTypes.GET_FILTERED_MOVIES_REJECTED,
       payload: error,
