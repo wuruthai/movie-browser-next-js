@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo, useCallback } from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
@@ -11,6 +11,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import IconButton from "@material-ui/core/IconButton";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -23,8 +24,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Item = ({ onView, onFavorite, item }) => {
+const Item = ({ onView, isFavorited, onFavorite, item }) => {
   const classes = useStyles();
+
   return (
     <Grid item xs={12} sm={6} md={4}>
       <Card className={classes.card}>
@@ -49,9 +51,9 @@ const Item = ({ onView, onFavorite, item }) => {
         <CardActions>
           <IconButton
             aria-label="add to favorites"
-            onClick={() => onFavorite(item)}
+            onClick={() => onFavorite(item, isFavorited)}
           >
-            <FavoriteIcon />
+            <FavoriteIcon color={isFavorited ? "secondary" : "inherit"} />
           </IconButton>
           <IconButton aria-label="View" onClick={() => onView(item)}>
             <VisibilityIcon />

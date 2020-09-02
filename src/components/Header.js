@@ -192,7 +192,11 @@ const Header = () => {
             >
               <HomeIcon />
             </IconButton>
-            <IconButton aria-label="favorites" color="inherit">
+            <IconButton
+              aria-label="favorites"
+              color="inherit"
+              onClick={() => router.push("/favorites")}
+            >
               <GradeIcon />
             </IconButton>
           </div>
