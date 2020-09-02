@@ -6,7 +6,7 @@ import theme from "../src/utils/theme";
 class _Document extends Document {
   render() {
     return (
-      <html lang="pt-BR" dir="ltr">
+      <html lang="en" dir="ltr">
         <Head>
           <meta charSet="utf-8" />
           <meta
