@@ -4,7 +4,6 @@ import service from "../../utils/service";
 export const getList = (page = 1) => async (dispatch, getState) => {
   dispatch({ type: movieTypes.GET_FILTERED_MOVIES_PENDING });
   const { filters } = getState();
-  console.log(filters);
   try {
     const response = await service.get("", {
       params: {
@@ -14,7 +13,6 @@ export const getList = (page = 1) => async (dispatch, getState) => {
         page,
       },
     });
-    console.log("response", response);
     return dispatch({
       type: movieTypes.GET_FILTERED_MOVIES_FULFILLED,
       payload: {
@@ -29,4 +27,11 @@ export const getList = (page = 1) => async (dispatch, getState) => {
       payload: error,
     });
   }
+};
+export const getOne = (imdbID) => async (dispatch, getState) => {
+  return service.get("", {
+    params: {
+      i: imdbID,
+    },
+  });
 };

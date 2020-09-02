@@ -15,6 +15,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getList } from "../redux/movie/movie.action";
 import { setFilters } from "../redux/filters/filters.action";
 import Button from "@material-ui/core/Button";
+import { useRouter } from "next/router";
 
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns"; // choose your lib
@@ -85,7 +86,18 @@ const Header = () => {
   const classes = useStyles();
   const movieTypeKeys = useMemo(() => Object.keys(MOVIE_TYPES), [MOVIE_TYPES]);
   const { search, date, movieType } = useSelector((state) => state.filters);
+  const router = useRouter();
+  console.log("router.pathname", router.pathname);
+  const showFilters = useMemo(() => {
+    switch (router.pathname) {
+      case "/":
+        return true;
 
+      default:
+        return false;
+    }
+  }, [router.pathname]);
+  console.log(showFilters);
   const dispatch = useDispatch();
   return (
     <div className={classes.grow}>
@@ -94,82 +106,90 @@ const Header = () => {
           <Typography className={classes.title} variant="h6" noWrap>
             Movie Browser
           </Typography>
-
-          <div className={classes.filterItem}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search"
-              variant="outlined"
-              value={search}
-              onChange={({ target: { value } }) =>
-                dispatch(setFilters({ search: value, movieType, date }))
-              }
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ "aria-label": "search" }}
-            />
-          </div>
-
-          <div className={classes.filterItem}>
-            <Select
-              value={movieType}
-              classes={{
-                root: classes.inputRoot,
-                select: classes.select,
-                icon: classes.selectIcon,
-              }}
-              onChange={({ target: { value } }) => {
-                dispatch(setFilters({ search, movieType: value, date }));
-              }}
-            >
-              {movieTypeKeys.map((type) => (
-                <MenuItem key={type} value={MOVIE_TYPES[type]}>
-                  {MOVIE_TYPES[type]}
-                </MenuItem>
-              ))}
-            </Select>
-          </div>
-          <div className={classes.filterItem}>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <DatePicker
-                TextFieldComponent={(props) => (
-                  <InputBase
-                    {...props}
+          {showFilters && (
+            <>
+              <div className={classes.filterItem}>
+                <div className={classes.searchIcon}>
+                  <SearchIcon />
+                </div>
+                <InputBase
+                  placeholder="Search"
+                  variant="outlined"
+                  value={search}
+                  onChange={({ target: { value } }) =>
+                    dispatch(setFilters({ search: value, movieType, date }))
+                  }
+                  classes={{
+                    root: classes.inputRoot,
+                    input: classes.inputInput,
+                  }}
+                  inputProps={{ "aria-label": "search" }}
+                />
+              </div>
+              <div className={classes.filterItem}>
+                <Select
+                  value={movieType}
+                  classes={{
+                    root: classes.inputRoot,
+                    select: classes.select,
+                    icon: classes.selectIcon,
+                  }}
+                  onChange={({ target: { value } }) => {
+                    dispatch(setFilters({ search, movieType: value, date }));
+                  }}
+                >
+                  {movieTypeKeys.map((type) => (
+                    <MenuItem key={type} value={MOVIE_TYPES[type]}>
+                      {MOVIE_TYPES[type]}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </div>
+              <div className={classes.filterItem}>
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <DatePicker
+                    TextFieldComponent={(props) => (
+                      <InputBase
+                        {...props}
+                        placeholder="Year"
+                        inputProps={{ "aria-label": "year" }}
+                        style={{ color: "white", paddingLeft: 10 }}
+                      />
+                    )}
+                    animateYearScrolling
+                    clearable
+                    emptyLabel="Year"
+                    variant="outlined"
                     placeholder="Year"
-                    inputProps={{ "aria-label": "year" }}
-                    style={{ color: "white", paddingLeft: 10 }}
+                    disableFuture
+                    value={date}
+                    views={["year"]}
+                    onChange={(newDate) => {
+                      dispatch(
+                        setFilters({ search, movieType, date: newDate })
+                      );
+                    }}
                   />
-                )}
-                animateYearScrolling
-                clearable
-                emptyLabel="Year"
-                variant="outlined"
-                placeholder="Year"
-                disableFuture
-                value={date}
-                views={["year"]}
-                onChange={(newDate) => {
-                  dispatch(setFilters({ search, movieType, date: newDate }));
-                }}
-              />
-            </MuiPickersUtilsProvider>
-          </div>
-          <Button
-            disabled={!search}
-            variant="contained"
-            color="primary"
-            className={classes.button}
-            onClick={() => dispatch(getList())}
-          >
-            GET
-          </Button>
+                </MuiPickersUtilsProvider>
+              </div>
+              <Button
+                disabled={!search}
+                variant="contained"
+                color="primary"
+                className={classes.button}
+                onClick={() => dispatch(getList())}
+              >
+                GET
+              </Button>
+            </>
+          )}
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton aria-label="home" color="inherit">
+            <IconButton
+              aria-label="home"
+              color="inherit"
+              onClick={() => router.push("/")}
+            >
               <HomeIcon />
             </IconButton>
             <IconButton aria-label="favorites" color="inherit">

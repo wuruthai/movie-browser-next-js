@@ -8,6 +8,9 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import VisibilityIcon from "@material-ui/icons/Visibility";
+import IconButton from "@material-ui/core/IconButton";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -20,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Item = ({ Title, Poster, Year }) => {
+const Item = ({ onView, onFavorite, item }) => {
   const classes = useStyles();
   return (
     <Grid item xs={12} sm={6} md={4}>
@@ -29,27 +32,30 @@ const Item = ({ Title, Poster, Year }) => {
           component="img"
           className={classes.cardMedia}
           image={
-            Poster === "N/A"
+            item.Poster === "N/A"
               ? "https://parisaksesuar.com.tr/wp-content/uploads/2018/03/placehold.it-300x450-3.jpg"
-              : Poster
+              : item.Poster
           }
         />
         <CardContent className={classes.cardContent}>
-          <Typography gutterBottom variant="subtitle1" component="h3">
-            {`${Title} - ${Year}`}
+          <Typography variant="subtitle1" component="h3">
+            {`${item.Title} - ${item.Year}`}
           </Typography>
-          <Typography component="p">
+          {/* <Typography component="p">
             This is a media card. You can use this section to describe the
             content.
-          </Typography>
+          </Typography> */}
         </CardContent>
         <CardActions>
-          <Button size="small" color="primary">
-            View
-          </Button>
-          <Button size="small" color="primary">
-            Edit
-          </Button>
+          <IconButton
+            aria-label="add to favorites"
+            onClick={() => onFavorite(item)}
+          >
+            <FavoriteIcon />
+          </IconButton>
+          <IconButton aria-label="View" onClick={() => onView(item)}>
+            <VisibilityIcon />
+          </IconButton>
         </CardActions>
       </Card>
     </Grid>

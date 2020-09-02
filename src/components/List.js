@@ -1,8 +1,9 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
 import Card from "./Item";
+import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
+import { useRouter } from "next/router";
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -17,12 +18,19 @@ const useStyles = makeStyles((theme) => ({
 
 const List = ({ data = [] }) => {
   const classes = useStyles();
+  const router = useRouter();
 
   return (
     <Container className={classes.cardGrid} maxWidth="md">
       <Grid container spacing={4}>
         {data.map((item) => (
-          <Card Title={item.Title} Poster={item.Poster} Year={item.Year} />
+          <Card
+            item={item}
+            onView={() => {
+              router.push(`/movies/${item.imdbID}`);
+            }}
+            onFavorite={() => {}}
+          />
         ))}
       </Grid>
     </Container>
