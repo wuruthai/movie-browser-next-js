@@ -4,11 +4,13 @@ import thunk from "redux-thunk";
 import movieReducer from "../redux/movie/movie.reducer";
 import filtersReducer from "../redux/filters/filters.reducer";
 import favoriteReducer from "../redux/favorite/favorite.reducer";
+import snackbarReducer from "../redux/snackbar/snackbar.reducer";
 
 const combinedReducers = combineReducers({
   favorite: favoriteReducer,
   movie: movieReducer,
   filters: filtersReducer,
+  snackbar: snackbarReducer,
 });
 const makeStore = (initialState) => {
   const isServer = typeof window === "undefined";

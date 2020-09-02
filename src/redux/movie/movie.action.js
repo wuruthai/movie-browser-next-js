@@ -1,5 +1,6 @@
 import * as movieTypes from "./movie.type";
 import service from "../../utils/service";
+import { openSnackBar } from "../snackbar/snackbar.action";
 
 export const getList = (page = 1) => async (dispatch, getState) => {
   dispatch({ type: movieTypes.GET_FILTERED_MOVIES_PENDING });
@@ -13,6 +14,8 @@ export const getList = (page = 1) => async (dispatch, getState) => {
         page,
       },
     });
+    if (response.data.Error || !response.data.Response)
+      dispatch(openSnackBar(response.data.Error));
     return dispatch({
       type: movieTypes.GET_FILTERED_MOVIES_FULFILLED,
       payload: {
@@ -22,6 +25,7 @@ export const getList = (page = 1) => async (dispatch, getState) => {
       },
     });
   } catch (error) {
+    console.log(error);
     return dispatch({
       type: movieTypes.GET_FILTERED_MOVIES_REJECTED,
       payload: error,
